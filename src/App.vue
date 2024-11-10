@@ -10,7 +10,7 @@
       <div v-if="error">
         <h1 class="display-4">Oops!</h1>
         <p class="lead">{{error}}</p>
-        <button class="btn btn-primary" @click="resetToken">Try Again &gt;</button>
+        <button class="btn btn-primary" @click="resetToken">Try Again ></button>
       </div>
 
       <!-- Otherwise show our app contents -->
@@ -35,7 +35,7 @@
           <div class="form-group">
             <h2>Hello!</h2>
             <p class="lead">If you would like to use this App, please authorize with YNAB!</p>
-            <button @click="authorizeWithYNAB" class="btn btn-primary">Authorize This App With YNAB &gt;</button>
+            <button @click="authorizeWithYNAB" class="btn btn-primary">Authorize This App With YNAB ></button>
           </div>
         </form>
 
@@ -45,7 +45,7 @@
         <!-- If a budget has been selected, display transactions from that budget -->
         <div v-else>
           <Transactions :transactions="transactions" />
-          <button class="btn btn-info" @click="budgetId = null">&lt; Select Another Budget</button>
+          <button class="btn btn-info" @click="budgetId = null">< Select Another Budget</button>
         </div>
 
       </div>
@@ -68,14 +68,8 @@ import Footer from './components/Footer.vue';
 import Budgets from './components/Budgets.vue';
 import Transactions from './components/Transactions.vue';
 
-// Vue 2 conversion: Define components globally
-Vue.component('Nav', Nav);
-Vue.component('Footer', Footer);
-Vue.component('Budgets', Budgets);
-Vue.component('Transactions', Transactions);
-
-new Vue({
-  el: '#app',
+export default {
+  // The data to feed our templates
   data () {
     return {
       ynab: {
@@ -91,10 +85,12 @@ new Vue({
       transactions: [],
     }
   },
+  // When this component is created, check whether we need to get a token,
+  // budgets or display the transactions
   created() {
     this.ynab.token = this.findYNABToken();
     if (this.ynab.token) {
-      this.ynab.api = new ynab.API(this.ynab.token); // !VUE2 CONVERSION! Changed ynab.api to ynab.API
+      this.api = new ynab.API(this.ynab.token); // !VUE2 CONVERSION! Use ynab.API instead of ynab.api
       if (!this.budgetId) {
         this.getBudgets();
       } else {
@@ -107,7 +103,7 @@ new Vue({
     getBudgets() {
       this.loading = true;
       this.error = null;
-      this.ynab.api.budgets.getBudgets().then((res) => {
+      this.api.budgets.getBudgets().then((res) => {
         this.budgets = res.data.budgets;
       }).catch((err) => {
         this.error = err.error.detail;
@@ -121,7 +117,7 @@ new Vue({
       this.error = null;
       this.budgetId = id;
       this.transactions = [];
-      this.ynab.api.transactions.getTransactions(id).then((res) => {
+      this.api.transactions.getTransactions(id).then((res) => {
         this.transactions = res.data.transactions;
       }).catch((err) => {
         this.error = err.error.detail;
@@ -161,6 +157,13 @@ new Vue({
       this.ynab.token = null;
       this.error = null;
     }
+  },
+  // Specify which components we want to make available to our templates
+  components: {
+    Nav,
+    Footer,
+    Budgets,
+    Transactions
   }
-});
+}
 </script>
