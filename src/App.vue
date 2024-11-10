@@ -10,7 +10,7 @@
       <div v-if="error">
         <h1 class="display-4">Oops!</h1>
         <p class="lead">{{error}}</p>
-        <button class="btn btn-primary" @click="resetToken">Try Again &gt;</button>
+        <button class="btn btn-primary" @click="resetToken">Try Again ></button>
       </div>
 
       <!-- Otherwise show our app contents -->
@@ -35,7 +35,7 @@
           <div class="form-group">
             <h2>Hello!</h2>
             <p class="lead">If you would like to use this App, please authorize with YNAB!</p>
-            <button @click="authorizeWithYNAB" class="btn btn-primary">Authorize This App With YNAB &gt;</button>
+            <button @click="authorizeWithYNAB" class="btn btn-primary">Authorize This App With YNAB ></button>
           </div>
         </form>
 
@@ -45,7 +45,7 @@
         <!-- If a budget has been selected, display transactions from that budget -->
         <div v-else>
           <Transactions :transactions="transactions" />
-          <button class="btn btn-info" @click="budgetId = null">&lt; Select Another Budget</button>
+          <button class="btn btn-info" @click="budgetId = null">< Select Another Budget</button>
         </div>
 
       </div>
@@ -90,7 +90,7 @@ export default {
   created() {
     this.ynab.token = this.findYNABToken();
     if (this.ynab.token) {
-      this.api = new ynab.api(this.ynab.token);
+      this.api = new ynab.API(this.ynab.token); // !VUE2 CONVERSION! Use ynab.API instead of ynab.api
       if (!this.budgetId) {
         this.getBudgets();
       } else {
