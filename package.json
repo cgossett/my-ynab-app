@@ -13,12 +13,12 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "cpr": "^3.0.1",
-    "vue": "^3.4.5",
+    "vue": "^2.7",
     "ynab": "^2.2.0"
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
-    "vue-loader": "^17.4.2",
+    "vue-loader": "^15.9.8",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"

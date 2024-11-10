@@ -5,7 +5,7 @@
 name: Deploy to GitHub Pages
 on:
   push:
-    branches: [main]
+    branches: [main, vue2-responseA, vue2-responseB]
 jobs:
   deploy:
     runs-on: ubuntu-latest

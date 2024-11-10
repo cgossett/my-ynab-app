@@ -68,8 +68,14 @@ import Footer from './components/Footer.vue';
 import Budgets from './components/Budgets.vue';
 import Transactions from './components/Transactions.vue';
 
-export default {
-  // The data to feed our templates
+// Vue 2 conversion: Define components globally
+Vue.component('Nav', Nav);
+Vue.component('Footer', Footer);
+Vue.component('Budgets', Budgets);
+Vue.component('Transactions', Transactions);
+
+new Vue({
+  el: '#app',
   data () {
     return {
       ynab: {
@@ -85,12 +91,10 @@ export default {
       transactions: [],
     }
   },
-  // When this component is created, check whether we need to get a token,
-  // budgets or display the transactions
   created() {
     this.ynab.token = this.findYNABToken();
     if (this.ynab.token) {
-      this.api = new ynab.API(this.ynab.token);
+      this.ynab.api = new ynab.API(this.ynab.token); // !VUE2 CONVERSION! Changed ynab.api to ynab.API
       if (!this.budgetId) {
         this.getBudgets();
       } else {
@@ -103,7 +107,7 @@ export default {
     getBudgets() {
       this.loading = true;
       this.error = null;
-      this.api.budgets.getBudgets().then((res) => {
+      this.ynab.api.budgets.getBudgets().then((res) => {
         this.budgets = res.data.budgets;
       }).catch((err) => {
         this.error = err.error.detail;
@@ -117,7 +121,7 @@ export default {
       this.error = null;
       this.budgetId = id;
       this.transactions = [];
-      this.api.transactions.getTransactions(id).then((res) => {
+      this.ynab.api.transactions.getTransactions(id).then((res) => {
         this.transactions = res.data.transactions;
       }).catch((err) => {
         this.error = err.error.detail;
@@ -157,13 +161,6 @@ export default {
       this.ynab.token = null;
       this.error = null;
     }
-  },
-  // Specify which components we want to make available to our templates
-  components: {
-    Nav,
-    Footer,
-    Budgets,
-    Transactions
   }
-}
+});
 </script>
