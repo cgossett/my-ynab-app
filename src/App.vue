@@ -90,7 +90,7 @@ export default {
   created() {
     this.ynab.token = this.findYNABToken();
     if (this.ynab.token) {
-      this.api = new ynab.api(this.ynab.token);
+      this.api = new ynab.API(this.ynab.token);
       if (!this.budgetId) {
         this.getBudgets();
       } else {
